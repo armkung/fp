@@ -1,0 +1,23 @@
+{
+    "extends": "@appman/appman",
+    "env": {
+      "node": true,
+      "es6": true,
+      "browser": false,
+      "jest": true
+    },
+    "settings": {
+      "import/resolver": {
+        "babel-module": {}
+      }
+    },    
+    "rules": {
+      "import/no-extraneous-dependencies": ["error", {
+        "devDependencies": true,
+        "optionalDependencies": false,
+        "peerDependencies": false
+      }],
+      "no-underscore-dangle": 0
+    }
+}
+  

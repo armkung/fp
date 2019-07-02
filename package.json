@@ -1,0 +1,23 @@
+{
+  "name": "fp",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "dependencies": {
+    "lodash": "^4.17.11"
+  },
+  "scripts": {
+    "test": "jest src"
+  },
+  "devDependencies": {
+    "@appman/eslint-config-appman": "^1.2.0",
+    "@babel/core": "^7.4.5",
+    "@babel/preset-env": "^7.4.5",
+    "babel-jest": "^24.8.0",
+    "jest": "^24.8.0",
+    "eslint": "^5.16.0",
+    "eslint-import-resolver-babel-module": "^5.1.0",
+    "eslint-plugin-import": "^2.18.0",
+    "eslint-plugin-jsx-a11y": "^6.2.1",
+    "eslint-plugin-react": "^7.13.0"
+  }
+}
