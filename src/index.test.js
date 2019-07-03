@@ -1,6 +1,15 @@
 import * as fp from './index'
 
 describe('fp', () => {
+  describe('pipe', () => {
+    it('return 2', () => {
+      const result = fp.pipe(
+        fp.nthArg(1)
+      )(1, 2)
+
+      expect(result).toEqual(2)
+    })
+  })
   describe('applySpec', () => {
     const data = { a: 1 }
     it('return object', () => {
