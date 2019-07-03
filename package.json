@@ -1,15 +1,17 @@
 {
   "name": "fp",
   "version": "1.0.0",
-  "main": "src/index.js",
+  "main": "dist/index.js",
   "dependencies": {
     "lodash": "^4.17.11"
   },
   "scripts": {
+    "build": "babel src --out-dir dist",
     "test": "jest src"
   },
   "devDependencies": {
     "@appman/eslint-config-appman": "^1.2.0",
+    "@babel/cli": "^7.4.4",
     "@babel/core": "^7.4.5",
     "@babel/preset-env": "^7.4.5",
     "babel-jest": "^24.8.0",

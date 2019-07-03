@@ -9,7 +9,7 @@ module.exports = {
       },
     ],
   ],
-  ignore: ['node_modules'],
+  ignore: ['node_modules', '**/*.test.js'],
   sourceMap: 'inline',
   retainLines: true,
 }
