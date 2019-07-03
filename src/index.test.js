@@ -1,4 +1,7 @@
-import * as fp from './index'
+import fp from 'lodash/fp'
+import extendFp from './index'
+
+extendFp(fp)
 
 describe('fp', () => {
   describe('pipe', () => {

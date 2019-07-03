@@ -2,22 +2,24 @@
 
 import * as fp from 'lodash/fp'
 
+const _fp = {}
+
 // no curry
-export const ifElse = (predicate, whenTrueFn, whenFalseFn) => (...args) =>
-  (predicate(...args) ? whenTrueFn(...args) : whenFalseFn(...args))
+_fp.ifElse = (predicate, whenTrueFn, whenFalseFn) => (...args) =>
+  predicate(...args) ? whenTrueFn(...args) : whenFalseFn(...args)
 
-export const when = (predicate, whenTrueFn) => (...args) =>
-  ifElse(predicate, whenTrueFn, fp.identity)(...args)
+_fp.when = (predicate, whenTrueFn) => (...args) =>
+  _fp.ifElse(predicate, whenTrueFn, fp.identity)(...args)
 
-export const applyTo = (...args) => fn => fp.apply(fn)(fp.flatten(args))
+_fp.applyTo = (...args) => fn => fp.apply(fn)(fp.flatten(args))
 
-export const traverse = (
+_fp.traverse = (
   transform = fp.identity,
   fn = (value, path, obj) => fp.set(path, value, obj),
   result = {}
 ) =>
   function reduce(acc, keys = []) {
-    return when(
+    return _fp.when(
       fp.overSome([fp.isArray, fp.isPlainObject]),
       fp.pipe(
         fp.toPairs,
@@ -36,49 +38,49 @@ export const traverse = (
 // curry
 export * from 'lodash/fp'
 
-export const dropRightWhileWithKey = fp.dropRightWhile.convert({ cap: false })
-export const dropWhileWithKey = fp.dropWhile.convert({ cap: false })
-export const everyWithKey = fp.every.convert({ cap: false })
-export const filterWithKey = fp.filter.convert({ cap: false })
-export const findWithKey = fp.find.convert({ cap: false })
-export const findFromWithKey = fp.findFrom.convert({ cap: false })
-export const findIndexWithKey = fp.findIndex.convert({ cap: false })
-export const findIndexFromWithKey = fp.findIndexFrom.convert({ cap: false })
-export const findKeyWithKey = fp.findKey.convert({ cap: false })
-export const findLastWithKey = fp.findLast.convert({ cap: false })
-export const findLastFromWithKey = fp.findLastFrom.convert({ cap: false })
-export const findLastIndexWithKey = fp.findLastIndex.convert({ cap: false })
-export const findLastIndexFromWithKey = fp.findLastIndexFrom.convert({ cap: false })
-export const findLastKeyWithKey = fp.findLastKey.convert({ cap: false })
-export const flatMapWithKey = fp.flatMap.convert({ cap: false })
-export const flatMapDeepWithKey = fp.flatMapDeep.convert({ cap: false })
-export const flatMapDepthWithKey = fp.flatMapDepth.convert({ cap: false })
-export const forEachWithKey = fp.forEach.convert({ cap: false })
-export const forEachRightWithKey = fp.forEachRight.convert({ cap: false })
-export const forInWithKey = fp.forIn.convert({ cap: false })
-export const forInRightWithKey = fp.forInRight.convert({ cap: false })
-export const forOwnWithKey = fp.forOwn.convert({ cap: false })
-export const forOwnRightWithKey = fp.forOwnRight.convert({ cap: false })
-export const mapWithKey = fp.map.convert({ cap: false })
-export const mapKeysWithKey = fp.mapKeys.convert({ cap: false })
-export const mapValuesWithKey = fp.mapValues.convert({ cap: false })
-export const partitionWithKey = fp.partition.convert({ cap: false })
-export const rejectWithKey = fp.reject.convert({ cap: false })
-export const removeWithKey = fp.remove.convert({ cap: false })
-export const someWithKey = fp.some.convert({ cap: false })
-export const takeRightWhileWithKey = fp.takeRightWhile.convert({ cap: false })
-export const takeWhileWithKey = fp.takeWhile.convert({ cap: false })
-export const timesWithKey = fp.times.convert({ cap: false })
+_fp.dropRightWhileWithKey = fp.dropRightWhile.convert({ cap: false })
+_fp.dropWhileWithKey = fp.dropWhile.convert({ cap: false })
+_fp.everyWithKey = fp.every.convert({ cap: false })
+_fp.filterWithKey = fp.filter.convert({ cap: false })
+_fp.findWithKey = fp.find.convert({ cap: false })
+_fp.findFromWithKey = fp.findFrom.convert({ cap: false })
+_fp.findIndexWithKey = fp.findIndex.convert({ cap: false })
+_fp.findIndexFromWithKey = fp.findIndexFrom.convert({ cap: false })
+_fp.findKeyWithKey = fp.findKey.convert({ cap: false })
+_fp.findLastWithKey = fp.findLast.convert({ cap: false })
+_fp.findLastFromWithKey = fp.findLastFrom.convert({ cap: false })
+_fp.findLastIndexWithKey = fp.findLastIndex.convert({ cap: false })
+_fp.findLastIndexFromWithKey = fp.findLastIndexFrom.convert({ cap: false })
+_fp.findLastKeyWithKey = fp.findLastKey.convert({ cap: false })
+_fp.flatMapWithKey = fp.flatMap.convert({ cap: false })
+_fp.flatMapDeepWithKey = fp.flatMapDeep.convert({ cap: false })
+_fp.flatMapDepthWithKey = fp.flatMapDepth.convert({ cap: false })
+_fp.forEachWithKey = fp.forEach.convert({ cap: false })
+_fp.forEachRightWithKey = fp.forEachRight.convert({ cap: false })
+_fp.forInWithKey = fp.forIn.convert({ cap: false })
+_fp.forInRightWithKey = fp.forInRight.convert({ cap: false })
+_fp.forOwnWithKey = fp.forOwn.convert({ cap: false })
+_fp.forOwnRightWithKey = fp.forOwnRight.convert({ cap: false })
+_fp.mapWithKey = fp.map.convert({ cap: false })
+_fp.mapKeysWithKey = fp.mapKeys.convert({ cap: false })
+_fp.mapValuesWithKey = fp.mapValues.convert({ cap: false })
+_fp.partitionWithKey = fp.partition.convert({ cap: false })
+_fp.rejectWithKey = fp.reject.convert({ cap: false })
+_fp.removeWithKey = fp.remove.convert({ cap: false })
+_fp.someWithKey = fp.some.convert({ cap: false })
+_fp.takeRightWhileWithKey = fp.takeRightWhile.convert({ cap: false })
+_fp.takeWhileWithKey = fp.takeWhile.convert({ cap: false })
+_fp.timesWithKey = fp.times.convert({ cap: false })
 
-export const concatWith = fp.concat.convert({ rearg: true })
+_fp.concatWith = fp.concat.convert({ rearg: true })
 
-export const is = fp.curry(
+_fp.is = fp.curry(
   (constructor, value) =>
     /* istanbul ignore next */
     (value != null && value.constructor === constructor) || value instanceof constructor
 )
 
-export const evolve = fp.curry(function evolve(transformations, object) {
+_fp.evolve = fp.curry(function evolve(transformations, object) {
   const result = {}
   let transformation
   let key
@@ -91,17 +93,24 @@ export const evolve = fp.curry(function evolve(transformations, object) {
       type === 'function'
         ? transformation(object[key])
         : transformation && type === 'object'
-          ? evolve(transformation, object[key])
-          : object[key]
+        ? evolve(transformation, object[key])
+        : object[key]
   }
   return result
 })
 
-export const applySpec = fp.curry((destObj, srcObj) =>
-  fp.mapValues(ifElse(fp.isFunction, applyTo(srcObj), fp.identity), destObj))
+_fp.applySpec = fp.curry((destObj, srcObj) =>
+  fp.mapValues(_fp.ifElse(fp.isFunction, _fp.applyTo(srcObj), fp.identity), destObj)
+)
 
-export const append = fp.curry((elem, list) => fp.concat(list, [elem]))
+_fp.append = fp.curry((elem, list) => fp.concat(list, [elem]))
 
-export const prepend = fp.curry((elem, list) => fp.concat([elem], list))
+_fp.prepend = fp.curry((elem, list) => fp.concat([elem], list))
 
-export const objOf = fp.curry((key, value) => fp.set(key, value, {}))
+_fp.objOf = fp.curry((key, value) => fp.set(key, value, {}))
+
+export default fp => {
+  Object.keys(_fp).forEach((key) => {
+    fp[key] = _fp[key]
+  })
+}
