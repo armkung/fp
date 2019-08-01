@@ -1,6 +1,18 @@
 import * as fp from './index'
 
 describe('fp', () => {
+  describe('concat', () => {
+    it('return array', () => {
+      const result = fp.concat([])(1)
+
+      expect(result).toEqual([1])
+    })
+    it('return array', () => {
+      const result = fp.concat([])([1])
+
+      expect(result).toEqual([1])
+    })
+  })
   describe('pipe', () => {
     it('return 2', () => {
       const result = fp.pipe(
