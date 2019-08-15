@@ -101,6 +101,29 @@ describe('fp', () => {
         e: true,
       },
     }
+
+    it('return object without mutation', () => {
+      const fn = fp.traverse(
+        fp.identity,
+        (value, path, obj) => {
+          if (fp.isNumber(value)) {
+            return fp.set(path, value, obj)
+          }
+          return obj
+        }
+      )
+
+      const result1 = fn({
+        a: 1,
+      })
+      const result2 = fn({
+        b: 2,
+      })
+
+      expect(result1).toEqual({ a: 1 })
+      expect(result2).toEqual({ b: 2 })
+    })
+
     it('return object', () => {
       const result = fp.traverse()(data)
 

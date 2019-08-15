@@ -14,24 +14,30 @@ export const applyTo = (...args) => fn => fp.apply(fn)(fp.flatten(args))
 export const traverse = (
   transform = fp.identity,
   fn = (value, path, obj) => fp.set(path, value, obj),
-  result = {}
-) =>
-  function reduce(acc, keys = []) {
+  initialValue = {}
+) => {
+  let result
+  return function reduce(acc, keys = [], isFirstTime = true) {
     return when(
       fp.overSome([fp.isArray, fp.isPlainObject]),
       fp.pipe(
         fp.toPairs,
         fp.map(([key, value]) => {
+          if (isFirstTime) {
+            result = initialValue
+          }
+
           const path = keys.concat(key)
           const mappedValue = transform(value, path, fp.get(key, acc), result)
-          result = fn(mappedValue, path, result)
+          result = fn(mappedValue, path, result, acc)
 
-          reduce(mappedValue, path)
+          reduce(mappedValue, path, false)
         }),
         () => result
       )
     )(acc)
   }
+}
 
 // curry
 export * from 'lodash/fp'
@@ -69,6 +75,8 @@ export const someWithKey = fp.some.convert({ cap: false })
 export const takeRightWhileWithKey = fp.takeRightWhile.convert({ cap: false })
 export const takeWhileWithKey = fp.takeWhile.convert({ cap: false })
 export const timesWithKey = fp.times.convert({ cap: false })
+export const pickByWithKey = fp.times.convert({ cap: false })
+export const omitByWithKey = fp.times.convert({ cap: false })
 
 export const concatWith = fp.concat.convert({ rearg: true })
 
