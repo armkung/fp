@@ -15,9 +15,7 @@ describe('fp', () => {
   })
   describe('pipe', () => {
     it('return 2', () => {
-      const result = fp.pipe(
-        fp.nthArg(1)
-      )(1, 2)
+      const result = fp.pipe(fp.nthArg(1))(1, 2)
 
       expect(result).toEqual(2)
     })
@@ -98,20 +96,17 @@ describe('fp', () => {
             c: 1,
           },
         ],
-        e: true,
       },
+      e: true,
     }
 
     it('return object without mutation', () => {
-      const fn = fp.traverse(
-        fp.identity,
-        (value, path, obj) => {
-          if (fp.isNumber(value)) {
-            return fp.set(path, value, obj)
-          }
-          return obj
+      const fn = fp.traverse(fp.identity, (value, path, obj) => {
+        if (fp.isNumber(value)) {
+          return fp.set(path, value, obj)
         }
-      )
+        return obj
+      })
 
       const result1 = fn({
         a: 1,
@@ -131,29 +126,27 @@ describe('fp', () => {
     })
 
     it('return modified object', () => {
-      const result = fp.traverse(
-        fp.when(
-          fp.overEvery([
-            fp.isNumber,
-            fp.pipe(
-              fp.rest(fp.last),
-              fp.get('a.e'),
-              fp.isEqual(true)
-            ),
-          ]),
-          fp.add(1)
+      const result = fp.pipe(
+        fp.map(
+          fp.traverse(
+            fp.when(
+              fp.isNumber,
+              fp.add(1)
+            )
+          )
         )
-      )(data)
+      )([data, data])
 
-      expect(result).toEqual({
+      expect(result[0]).toEqual(result[1])
+      expect(result[0]).toEqual({
         a: {
           b: [
             {
               c: 2,
             },
           ],
-          e: true,
         },
+        e: true,
       })
     })
 
@@ -165,11 +158,11 @@ describe('fp', () => {
       )(data)
 
       expect(result).toEqual([
-        [['a'], { b: [{ c: 1 }], e: true }],
+        [['a'], { b: [{ c: 1 }] }],
         [['a', 'b'], [{ c: 1 }]],
         [['a', 'b', '0'], { c: 1 }],
         [['a', 'b', '0', 'c'], 1],
-        [['a', 'e'], true],
+        [['e'], true],
       ])
     })
   })

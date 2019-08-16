@@ -4,7 +4,7 @@ import * as fp from 'lodash/fp'
 
 // no curry
 export const ifElse = (predicate, whenTrueFn, whenFalseFn) => (...args) =>
-  (predicate(...args) ? whenTrueFn(...args) : whenFalseFn(...args))
+  predicate(...args) ? whenTrueFn(...args) : whenFalseFn(...args)
 
 export const when = (predicate, whenTrueFn) => (...args) =>
   ifElse(predicate, whenTrueFn, fp.identity)(...args)
@@ -17,26 +17,28 @@ export const traverse = (
   initialValue = {}
 ) => {
   let result
-  return function reduce(acc, keys = [], isFirstTime = true) {
-    return when(
-      fp.overSome([fp.isArray, fp.isPlainObject]),
-      fp.pipe(
-        fp.toPairs,
-        fp.map(([key, value]) => {
-          if (isFirstTime) {
-            result = initialValue
-          }
+  return fp.unary(function reduce(acc, keys = [], isFirstTime = true) {
+    if (isFirstTime) {
+      result = initialValue
+    }
+    return fp.pipe(
+      when(
+        fp.overSome([fp.isArray, fp.isPlainObject]),
+        fp.pipe(
+          fp.toPairs,
+          fp.map(([key, value]) => {
+            const path = keys.concat(key)
+            const mappedValue = transform(value, path, fp.get(key, acc), result)
+            result = fn(mappedValue, path, result, acc)
 
-          const path = keys.concat(key)
-          const mappedValue = transform(value, path, fp.get(key, acc), result)
-          result = fn(mappedValue, path, result, acc)
-
-          reduce(mappedValue, path, false)
-        }),
-        () => result
-      )
+            reduce(mappedValue, path, false)
+          }),
+          () => result
+        )
+      ),
+      () => result
     )(acc)
-  }
+  })
 }
 
 // curry
@@ -99,14 +101,15 @@ export const evolve = fp.curry(function evolve(transformations, object) {
       type === 'function'
         ? transformation(object[key])
         : transformation && type === 'object'
-          ? evolve(transformation, object[key])
-          : object[key]
+        ? evolve(transformation, object[key])
+        : object[key]
   }
   return result
 })
 
 export const applySpec = fp.curry((destObj, srcObj) =>
-  fp.mapValues(ifElse(fp.isFunction, applyTo(srcObj), fp.identity), destObj))
+  fp.mapValues(ifElse(fp.isFunction, applyTo(srcObj), fp.identity), destObj)
+)
 
 export const append = fp.curry((elem, list) => fp.concat(list, [elem]))
 
