@@ -28,8 +28,8 @@ export const traverse = (
           fp.toPairs,
           fp.map(([key, value]) => {
             const path = keys.concat(key)
-            const mappedValue = transform(value, path, fp.get(key, acc), result)
-            result = fn(mappedValue, path, result, acc)
+            const mappedValue = transform(value, path, result, fp.get(key, result))
+            result = fn(mappedValue, path, result, fp.get(key, result))
 
             reduce(mappedValue, path, false)
           }),
