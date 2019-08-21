@@ -81,6 +81,7 @@ export const pickByWithKey = fp.times.convert({ cap: false })
 export const omitByWithKey = fp.times.convert({ cap: false })
 
 export const concatWith = fp.concat.convert({ rearg: true })
+export const containsWith = fp.contains.convert({ rearg: true })
 
 export const is = fp.curry(
   (constructor, value) =>
