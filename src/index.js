@@ -117,3 +117,9 @@ export const append = fp.curry((elem, list) => fp.concat(list, [elem]))
 export const prepend = fp.curry((elem, list) => fp.concat([elem], list))
 
 export const objOf = fp.curry((key, value) => fp.set(key, value, {}))
+
+export const assignOver = fp.curry((destObj, srcObj) => {
+  const extendedObj = applySpec(destObj, srcObj)
+
+  return fp.assign(srcObj, extendedObj)
+})

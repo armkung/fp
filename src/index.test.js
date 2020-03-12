@@ -187,4 +187,13 @@ describe('fp', () => {
       })
     })
   })
+
+  describe('assignOver', () => {
+    const data = { a: 1, b: 0 }
+    it('return object', () => {
+      const result = fp.assignOver({ b: fp.get('a'), c: 2 })(data)
+
+      expect(result).toEqual({ a: 1, b: 1, c: 2 })
+    })
+  })
 })
